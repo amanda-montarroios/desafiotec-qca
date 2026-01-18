@@ -31,6 +31,9 @@ Abra o terminal do seu VS Code e utilize o comando:
 ```bash
 git clone https://github.com/amanda-montarroios/desafiotec-qca.git
 
+##Instalação das dependências
+pip install pydantic pandas pdfplumber
+
 ##Depois de clonar, escreva no terminal
 python main.py
 
