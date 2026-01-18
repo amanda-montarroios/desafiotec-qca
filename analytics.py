@@ -1,9 +1,14 @@
+import os
 import pandas as pd
 
 class InvoiceAnalytics:
     def __init__(self, path: str = "database.json"):
+        if not os.path.exists(path):
+                self.df = pd.DataFrame()
+                self.items_df = pd.DataFrame()
+                return
         self.df = pd.read_json(path)
-
+      
         self.items_df = self.df.explode("items")
         self.items_df = pd.concat(
             [self.items_df.drop(["items"], axis=1),
