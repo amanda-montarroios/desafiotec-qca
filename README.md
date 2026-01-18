@@ -29,7 +29,7 @@ Siga os passos abaixo para configurar e rodar o projeto em sua máquina local:
 ### 1. Clonar o Repositório
 Abra o terminal do seu VS Code e utilize o comando:
 ```bash
-git clone https://github.com/amanda-montarroios/desafiotec-qca
+git clone https://github.com/amanda-montarroios/desafiotec-qca.git
 
 ##Depois de clonar, escreva no terminal
 python main.py
