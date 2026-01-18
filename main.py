@@ -1,43 +1,32 @@
 import os
 from ingestor import PDFIngestor
 from repository import InvoiceRepository
+from analytics import InvoiceAnalytics
 
-DATA_FOLDER = "data/invoices"
 
-def teste_ingestion_flow():
-    """
-    Script de teste para validar a extração e o armazenamento.
-    """
-    
-    if not os.path.exists(DATA_FOLDER):
-        print(f"Erro: A pasta {DATA_FOLDER} não existe. Crie ela e coloque os PDFs nela.")
-        return
+PDF_FOLDER = "data/invoices"
 
+def main():
     ingestor = PDFIngestor()
-    repo = InvoiceRepository(path="database.json")
+    repo = InvoiceRepository()
 
-    print("Iniciando processamento de PDFs...\n")
+    for file in os.listdir(PDF_FOLDER):
+        if file.endswith(".pdf"):
+            invoice = ingestor.extrair_invoice(
+                os.path.join(PDF_FOLDER, file)
+            )
+            repo.salvar_invoice(invoice)
 
-    files = [f for f in os.listdir(DATA_FOLDER) if f.endswith(".pdf")]
-    
-    if not files:
-        print("Nenhum arquivo PDF encontrado na pasta.")
-        return
+    analytics = InvoiceAnalytics()
 
-    for filename in files:
-        path = os.path.join(DATA_FOLDER, filename)
-        print(f"Processando: {filename}...")
-        
-        try:
-            invoice_data = ingestor.extrair_invoice(path)
-            
-            repo.salvar_invoice(invoice_data)
-            
-        except Exception as e:
-            print(f"Erro ao processar {filename}: {e}")
+    print("\nANALYTICS")
+    print("Média do valor das faturas:", analytics.media_invoice_valor())
+    print("Produto mais comprado:", analytics.mais_frequente_produto())
+    print("\nTotal gasto por produto:")
+    print(analytics.total_gasto_por_produto())
+    print("\nLista de produtos:")
+    print(analytics.produto_list())
 
-    print("\nTeste concluído!")
-    print(f"Verifique o arquivo 'database.json' para validar os dados.")
 
 if __name__ == "__main__":
-    teste_ingestion_flow()
+    main()
